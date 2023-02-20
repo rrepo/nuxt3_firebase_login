@@ -1,26 +1,19 @@
 <template>
   <div>
-    <button @click="handleRegistration()">email</button>
-    <button @click="login">google</button>
-    <button @click="logout">logout</button>
-
-    {{ isAuthed }}
-</div>
+    <!-- <button @click="handleRegistration()">signup</button> -->
+    <!-- <button @click="handleLoginEmail()">signin</button> -->
+    <!-- <button @click="loginGoogle()">google</button> -->
+    <button @click="logout()">logout</button>
+    {{ token }}
+  </div>
 </template>
   
 <script setup lang="ts">
-const { registerUser, user, login, logout, isAuthed } = useFirebaseAuth()
+const { loginGoogle, logout, user, token } = useFirebaseAuth()
 
-const creds = reactive({
-  email: "testtest@gmail.com",
-  password: "testpass"
+definePageMeta({
+  middleware: ['auth']
 })
 
-async function handleRegistration() {
-  await registerUser(creds.email, creds.password)
-}
-
-console.log("user", user)
-console.log("user", isAuthed)
-
+console.log(user)
 </script>
