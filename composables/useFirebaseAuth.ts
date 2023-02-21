@@ -71,22 +71,18 @@ export default function () {
     async function checkAuthState() {
         return await new Promise<void>((resolve, reject) => {
             if (process.server) return resolve()
-            onAuthStateChanged(
-                $auth,
-                (user) => {
-                    if (user) {
-                        user
-                            .getIdToken()
-                            .then((idtoken) => {
-                                token.value = idtoken
-                                resolve()
-                            })
-                            .catch(reject)
-                    } else {
-                        token.value = null
+            onAuthStateChanged($auth, (user) => {
+                if (user) {
+                    user.getIdToken().then((idtoken) => {
+                        token.value = idtoken
                         resolve()
-                    }
-                },
+                    })
+                        .catch(reject)
+                } else {
+                    token.value = null
+                    resolve()
+                }
+            },
                 (error) => {
                     reject(error)
                 }
@@ -101,7 +97,7 @@ export default function () {
         loginGoogle,
         logout,
         checkAuthState,
-        token
+        token,
     }
 }
 
