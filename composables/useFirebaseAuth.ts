@@ -52,6 +52,9 @@ export default function () {
         try {
             const provider = new GoogleAuthProvider();
             await signInWithPopup($auth, provider);
+
+            await postSignup()
+
             toTop()
         } catch (error) {
             throw error;
@@ -90,6 +93,16 @@ export default function () {
         })
     }
 
+    const postSignup = async () => {
+        await checkAuthState()
+        console.log(token.value)
+
+        const response = await fetch("http://localhost:8001/signup", {
+            headers: { 'Authorization': `Bearer ${token.value}` }
+        })
+        console.log(response)
+    }
+
     return {
         user,
         registerUser,
@@ -110,3 +123,4 @@ const toLogin: any = () => {
     const to = useRoute().redirectedFrom?.fullPath || '/login'
     navigateTo(to, { redirectCode: 302 })
 }
+
